@@ -12,7 +12,8 @@
 	},
 	"require": {
 		"php": ">=5.2.4",
-		"elasticsearch/elasticsearch": "~2.0"
+		"elasticsearch/elasticsearch": "~2.0",
+		"guzzlehttp/guzzle": "~6.0"
 	},
 	"suggest": {
 		"paragonie/random_compat": "Provides better randomness in PHP 5.x"

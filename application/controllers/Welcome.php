@@ -25,11 +25,9 @@ class Welcome extends CI_Controller {
 	 */
 	public function index()
 	{
-	    $host = [
-	        'http://localhost:9200'
+        $host = [
+            'http://localhost:9200'
         ];
-
-
         $client = ClientBuilder::create()
             ->setHosts($host)
             ->build();
@@ -47,7 +45,6 @@ class Welcome extends CI_Controller {
         $response = $client->search($params);
         echo "<pre>";
         print_r($response);
-
 		$this->load->view('welcome_message');
 	}
 }
