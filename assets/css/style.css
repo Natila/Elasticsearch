@@ -87,13 +87,13 @@ a:hover {
 }
 
 .product {
-    list-style-type: none;
     text-align: center;
     width: 18vw;
-    height: 250px;
-    max-width: 280px;
+    height: 340px;
+    max-width: 270px;
     display: block;
     float: left;
+    margin: 10px 15px;
 }
 
 .product img {
@@ -105,6 +105,7 @@ a:hover {
 .product .title {
     height: auto;
     margin-top: 6px;
+    line-height: 1.5;
 }
 
 .product p {
@@ -142,7 +143,7 @@ a:hover {
     padding-left: 8%;
 }
 
-.side-nav .content {
+.side-nav .product-list {
     font-size: 14px;
 }
 
@@ -163,9 +164,11 @@ a:hover {
 }
 
 .search-filter {
-    border-bottom: 1px solid #e1e1e8;
     padding: 4px;
     margin-left: 20px;
+    width: 18vw;
+    min-width: 200px;
+    padding-left: 20px;
 }
 
 .search-filter.last {
@@ -195,6 +198,17 @@ a:hover {
     margin: 16px;
 }
 
+.category-filter,
+.brand-filter,
+.attribute-filter {
+    border-bottom: 1px solid #e1e1e8;
+    padding: 4px;
+}
+
+.attribute-filter input[type="checkbox"] {
+    margin: 8px 10px;
+}
+
 .search-query {
     width: 80%;
     min-width: 500px;
@@ -206,6 +220,8 @@ a:hover {
     padding-left: 40px;
 }
 
+
+
 .search-query .no-result {
     text-align: left;
     margin-left: -20%;
@@ -216,7 +232,7 @@ a:hover {
     padding-left: 40px;
 }
 
-.content {
+.product-list {
     background-color: #fff;
     font: 13px/20px normal Helvetica, Arial, sans-serif;
     color: #4F5155;

@@ -100,9 +100,73 @@ class SearchAPI extends REST_Controller {
             "body"=> [
                 "query"=> [
                     "bool"=> [
-                        "must"=>[
-                            "match"=> [
-                                "Description" => "* $this->q *"
+                        "should"=> [
+                            [
+                                "match"=> [
+                                    "Description" => "* $this->q *"
+                                ]
+                            ],
+                            [
+                                "match"=> [
+                                    "BrandName" => "* $this->q *"
+                                ]
+                            ],
+                            [
+                                "match"=> [
+                                    "CategoryName"=> "* $this->q *"
+                                ]
+                            ]
+                        ]
+                    ]
+                ],
+                "aggs"=> [
+                    "AllBrands"=> [
+                      "terms"=> [
+                          "field"=> "BrandId"
+                      ],
+                      "aggs"=> [
+                          "BrandName"=> [
+                              "terms"=> [
+                                  "field"=> "BrandName"
+                              ]
+                          ]
+                      ]
+                    ],
+                    "AllCategories"=> [
+                        "terms"=> [
+                            "field"=> "CategoryId"
+                        ],
+                        "aggs"=> [
+                            "CategoryName"=> [
+                                "terms"=> [
+                                    "field"=> "CategoryName"
+                                ]
+                            ]
+                        ]
+                    ],
+                    "AllAttributes"=> [
+                       "nested"=> [
+                           "path"=> "Attributes"
+                       ],
+                        "aggs"=> [
+                            "Attributes"=> [
+                                "terms"=> [
+                                   "field"=> "Attributes.AttributeId"
+                                ],
+                                "aggs"=> [
+                                    "AttributeValue"=> [
+                                        "nested"=> [
+                                            "path"=> "Attributes.AttributeValue"
+                                        ],
+                                        "aggs"=> [
+                                            "AttributeValueName"=> [
+                                                "terms"=> [
+                                                    "field"=> "Attributes.AttributeValue.AttributeValueName"
+                                                ]
+                                            ]
+                                        ]
+                                    ]
+                                ]
                             ]
                         ]
                     ]
@@ -112,5 +176,45 @@ class SearchAPI extends REST_Controller {
 
         $response = $client->search($params);
         $this->response($response);
+    }
+
+    public function search_suggestion_get() {
+        $suggestion_result  = $this->_get_suggesetion();
+    }
+
+    private function _get_suggesetion() {
+        $this->q = $this->get('q');
+
+        $client = ClientBuilder::create()
+            ->setHosts($this->host)
+            ->build();
+
+        $params = [
+            "index"=> "sample_index_2",
+            "type"=> "products",
+            "body"=> [
+                "suggest"=> [
+                    "text"=> $this->q,
+                    "suggestProductDescription"=> [
+                        "term"=> [
+                            "field"=> "Description"
+                        ]
+                    ],
+                    "suggestCategoryName"=> [
+                        "term"=> [
+                            "field"=> "CategoryName"
+                        ]
+                    ],
+                    "suggestBrandName"=> [
+                        "term"=> [
+                            "field"=> "BrandName"
+                        ]
+                    ]
+                ]
+            ]
+        ];
+
+        $response = $client->search($params);
+        return json_decode($response);
     }
 }

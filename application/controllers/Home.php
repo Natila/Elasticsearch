@@ -28,8 +28,27 @@ class Home extends CI_Controller{
 
             $result['total'] = $result['hits']['total'];
             $result['data'] = $result['hits']['hits'];
+            $result['AllBrands_filter'] = $result['aggregations']['AllBrands']['buckets'];
+            $result['AllCategories_filter'] = $result['aggregations']['AllCategories']['buckets'];
+            $result['AllAttributes_filter'] = $result['aggregations']['AllAttributes']['Attributes']['buckets'];
+
+            // Attributes
+            foreach ($result['AllAttributes_filter'] as $attribute) {
+                if ($attribute['key'] == 1) {
+                    $result['size_attribute']['key'] = "01";
+                    $result['size_attribute']['data'] = $attribute['AttributeValue']['AttributeValueName']['buckets'];
+                } else if ($attribute['key'] == 2) {
+                    $result['color_attribute']['key'] = "02";
+                    $result['color_attribute']['data'] = $attribute['AttributeValue']['AttributeValueName']['buckets'];
+                }
+            }
         }
 
         $this->load->view('home_view', $result);
+    }
+
+    public function search() {
+        $keyword = $this->input->get('q');
+        $respond = $this->client->get("SearchAPI/search_suggestion?q=$keyword")->getBody();
     }
 }
