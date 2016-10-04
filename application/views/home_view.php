@@ -21,6 +21,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                    name="q"
                    placeholder="Enter your keyword here . . ."
                    size="40"
+                   class="search"
                    value="<?php if($this->input->get('q') != '') echo strip_tags($this->input->get('q')); ?>" />
             <button type="submit">Go</button>
         </div>
